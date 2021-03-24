@@ -72,28 +72,14 @@ class EquipoController extends Controller
 
     //Handle File Upload
     if ($request->hasFile('imagen')) {
-
-      //Get filename with the extension
-      $filenamewithExt = $request->file('imagen')->getClientOriginalName();
-
-      //Get just filename
-      $filename = pathinfo($filenamewithExt, PATHINFO_FILENAME);
-
-      //Get just ext
-      $extension = $request->file('imagen')->guessClientExtension();
-
-      //FileName to store
+      $extension       = $request->file('imagen')->guessClientExtension();
       $fileNameToStore = time() . '.' . $extension;
-
-      //Upload Image
-      $path = $request->file('imagen')->storeAs('public/img/equipo', $fileNameToStore);
+      $request->file('imagen')->storeAs('public/img/equipo', $fileNameToStore);
     } else {
       $fileNameToStore = "noimagen.jpg";
     }
 
     $equipo->imagen = $fileNameToStore;
-
-
     $equipo->save();
     return Redirect::to("equipo");
   }
@@ -126,34 +112,19 @@ class EquipoController extends Controller
 
     if ($request->hasFile('imagen')) {
 
-      /*si la imagen que subes es distinta a la que está por defecto
-            entonces eliminaría la imagen anterior, eso es para evitar
-            acumular imagenes en el servidor*/
-      if ($equipo->imagen != 'noimagen.jpg') {
-        Storage::delete('../public/storage/img/equipo' . $equipo->imagen);
+      if ($equipo->imagen && $equipo->imagen != 'noimagen.jpg') {
+        Storage::delete('app/public/img/equipo' . $equipo->imagen);
       }
 
-
-      //Get filename with the extension
       $filenamewithExt = $request->file('imagen')->getClientOriginalName();
-
-      //Get just filename
-      $filename = pathinfo($filenamewithExt, PATHINFO_FILENAME);
-
-      //Get just ext
       $extension = $request->file('imagen')->guessClientExtension();
-
-      //FileName to store
       $fileNameToStore = time() . '.' . $extension;
-
-      //Upload Image
-      $path = $request->file('imagen')->storeAs('public/img/equipo', $fileNameToStore);
+      $request->file('imagen')->storeAs('public/img/equipo', $fileNameToStore);
     } else {
       $fileNameToStore = $equipo->imagen;
     }
 
     $equipo->imagen = $fileNameToStore;
-
     $equipo->save();
     return Redirect::to("equipo");
   }
@@ -164,28 +135,29 @@ class EquipoController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy(Request $request)
+  public function destroy(Request $request, Equipo $equipo)
   {
-    //
-    $equipo = Equipo::findOrFail($request->id_equipo);
-
-    if ($equipo->condicion == "1") {
-      $equipo->condicion = '0';
-      $equipo->save();
-      return Redirect::to("equipo");
-    } else {
-      $equipo->condicion = '1';
-      $equipo->save();
-      return Redirect::to("equipo");
-    }
+    $equipo->condicion = ($equipo->condicion == 0) ? 1 : 0;
+    $equipo->save();
+    return Redirect::to("equipo");
   }
 
   public function listarPdf()
   {
-    $equipos = Equipo::join('clasificaciones', 'equipos.clasificacion_id', '=', 'clasificaciones.id')
-      ->select('equipos.id', 'equipos.clasificacion_id', 'equipos.codigo', 'equipos.nombre', 'clasificaciones.nombre as nombre_clasificacion', 'equipos.stock', 'equipos.condicion')
-      ->orderBy('equipos.nombre', 'desc')->get();
+    // $equipos = Equipo::join('clasificaciones', 'equipos.clasificacion_id', '=', 'clasificaciones.id')
+    //   ->select('equipos.id', 'equipos.clasificacion_id', 'equipos.codigo', 'equipos.nombre', 'clasificaciones.nombre as nombre_clasificacion', 'equipos.stock', 'equipos.condicion')
+    //   ->orderBy('equipos.nombre', 'desc')->get();
 
+    $equipos = Equipo::select([
+      'id',
+      'activo_fijo',
+      'nombre',
+      'clasificacion_id'
+    ])->with([
+      'clasificacion' => function($query){
+        return $query->select(['id', 'nombre']);
+      }
+    ])->orderBy('nombre', 'desc')->get();
 
     $cont = Equipo::count();
 

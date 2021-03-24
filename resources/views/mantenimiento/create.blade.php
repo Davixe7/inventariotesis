@@ -40,7 +40,7 @@
           Tipo de Mantenimiento
         </label>
         <div class="form-check form-check-inline">
-          <input class="form-check-input ml-0" type="radio" name="tipo" id="inlineRadio1" value="preventivo">
+          <input class="form-check-input ml-0" type="radio" name="tipo" id="inlineRadio1" value="preventivo" required>
           <label class="form-check-label" for="inlineRadio1">Preventivo</label>
         </div>
         <div class="form-check form-check-inline">

@@ -9,29 +9,29 @@
     <!-- Ejemplo de tabla Listado -->
     <div class="card">
       <div class="card-header">
-
-        <h2>Listado de Equipos</h2><br />
-
-        <button class="btn btn-primary btn-lg" type="button" data-toggle="modal" data-target="#abrirmodal">
+        <h2>
+          Listado de Equipos
+        </h2>
+        <button
+          data-toggle="modal"
+          data-target="#abrirmodal"
+          type="button"
+          class="btn btn-primary btn-lg">
           <i class="fa fa-plus fa-2x"></i>&nbsp;&nbsp;Agregar Equipo
         </button>
 
-        <a href="{{url('listarEquipoPdf')}}" target="_blank">
+        <a href="{{ url('listarEquipoPdf' )}}" target="_blank">
           <button type="button" class="btn btn-success btn-lg">
-            <i class="fa fa-file fa-2x"></i>&nbsp;&nbsp;Reporte PDF
-
+            <i class="fa fa-file fa-2x"></i>
+            Reporte PDF
           </button>
-
         </a>
-
-
       </div>
       <div class="card-body">
         <div class="form-group row">
           <div class="col-md-6">
             {!!Form::open(array('url'=>'equipo','method'=>'GET','autocomplete'=>'off','role'=>'search'))!!}
             <div class="input-group">
-
               <input type="text" name="buscarTexto" class="form-control" placeholder="Buscar texto" value="{{$buscarTexto}}">
               <button type="submit" class="btn btn-primary"><i class="fa fa-search"></i> Buscar</button>
             </div>
@@ -51,7 +51,6 @@
             </tr>
           </thead>
           <tbody>
-
             @foreach($equipos as $prod)
             <tr>
               <td>
@@ -60,8 +59,12 @@
               <td>
                 {{$prod->clasificacion->nombre}}
               </td>
-              <td>{{$prod->nombre}}</td>
-              <td>{{$prod->activo_fijo}}</td>
+              <td>
+                {{$prod->nombre}}
+              </td>
+              <td>
+                {{$prod->activo_fijo}}
+              </td>
               <td>
                 @if($prod->condicion=="1")
                 <button type="button" class="btn btn-success btn-md">
@@ -73,31 +76,54 @@
                 </button>
                 @endif
               </td>
-
               <td>
-                <button type="button" class="btn btn-info btn-md" data-id_equipo="{{$prod->id}}" data-id_clasificacion="{{$prod->clasificacion_id}}" data-codigo="{{$prod->codigo}}" data-stock="{{$prod->stock}}" data-nombre="{{$prod->nombre}}" data-precio_venta="{{$prod->precio_venta}}" data-toggle="modal" data-target="#abrirmodalEditar">
-                  <i class="fa fa-edit fa-2x"></i> Editar
-                </button> &nbsp;
+                <button
+                  data-id_equipo="{{$prod->id}}"
+                  data-id_clasificacion="{{$prod->clasificacion_id}}"
+                  data-activo_fijo="{{$prod->activo_fijo}}"
+                  data-nombre="{{$prod->nombre}}"
+                  data-marca="{{$prod->marca}}"
+                  data-modelo="{{$prod->modelo}}"
+                  data-ubicacion="{{$prod->ubicacion}}"
+                  data-piso="{{$prod->piso}}"
+                  data-motivo_baja="{{$prod->motivo_baja}}"
+                  data-fecha_entrega_servicio="{{$prod->fecha_entrega_servicio}}"
+                  data-fecha_baja="{{$prod->fecha_baja}}"
+                  data-serie="{{$prod->serie}}"
+
+                  data-toggle="modal"
+                  data-target="#abrirmodalEditar"
+                  type="button"
+                  class="btn btn-info btn-md">
+                  <i class="fa fa-edit fa-2x"></i>
+                  Editar
+                </button>
               </td>
               <td>
-
                 @if($prod->condicion)
-                <button type="button" class="btn btn-danger btn-sm" data-id_equipo="{{$prod->id}}" data-toggle="modal" data-target="#cambiarEstado">
-                  <i class="fa fa-times fa-2x"></i> Desactivar
+                <button
+                  type="button"
+                  class="btn btn-danger btn-sm"
+                  data-id_equipo="{{$prod->id}}"
+                  data-toggle="modal"
+                  data-target="#cambiarEstado">
+                  <i class="fa fa-times fa-2x"></i>
+                  Desactivar
                 </button>
                 @else
-
-                <button type="button" class="btn btn-success btn-sm" data-id_equipo="{{$prod->id}}" data-toggle="modal" data-target="#cambiarEstado">
-                  <i class="fa fa-lock fa-2x"></i> Activar
+                <button
+                  type="button"
+                  class="btn btn-success btn-sm"
+                  data-id_equipo="{{$prod->id}}"
+                  data-toggle="modal"
+                  data-target="#cambiarEstado">
+                  <i class="fa fa-lock fa-2x"></i>
+                  Activar
                 </button>
-
                 @endif
-
               </td>
             </tr>
-
             @endforeach
-
           </tbody>
         </table>
 
@@ -107,6 +133,7 @@
     </div>
     <!-- Fin ejemplo de tabla Listado -->
   </div>
+
   <!--Inicio del modal agregar-->
   <div class="modal fade" id="abrirmodal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-primary modal-lg" role="document">
@@ -117,25 +144,18 @@
             <span aria-hidden="true">×</span>
           </button>
         </div>
-
         <div class="modal-body">
-
-
-          <form action="{{route('equipo.store')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
-
+          <form
+            action="{{route('equipo.store')}}"
+            method="post" class="form-horizontal" enctype="multipart/form-data">
             {{csrf_field()}}
-
             @include('equipo.form')
-
           </form>
         </div>
-
-      </div>
-      <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-  </div>
-  <!--Fin del modal-->
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!--Fin del modal-->
+  
 
 
   <!--Inicio del modal actualizar-->
@@ -150,29 +170,22 @@
         </div>
 
         <div class="modal-body">
-
-
-          <form action="{{route('equipo.update','test')}}" method="post" class="form-horizontal" enctype="multipart/form-data">
-
+          <form
+            action="{{ route('equipo.update','test') }}"
+            method="post" class="form-horizontal"
+            enctype="multipart/form-data">
             {{method_field('patch')}}
             {{csrf_field()}}
-
             <input type="hidden" id="id_equipo" name="id_equipo" value="">
-
             @include('equipo.form')
-
           </form>
         </div>
-
       </div>
-      <!-- /.modal-content -->
     </div>
-    <!-- /.modal-dialog -->
   </div>
-  <!--Fin del modal-->
 
 
-  <!--Inicio del modal Cambiar Estado-->
+  <!-- MODAL ESTADO EQUIPO -->
   <div class="modal fade" id="cambiarEstado" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;" aria-hidden="true">
     <div class="modal-dialog modal-primary modal-lg" role="document">
       <div class="modal-content">
@@ -184,24 +197,20 @@
         </div>
 
         <div class="modal-body">
-
-
-          <form action="{{route('equipo.destroy','test')}}" method="post" class="form-horizontal">
-
+          <form id="form-delete-equipo" action="{{route('equipo.destroy','test')}}" method="post" class="form-horizontal">
             {{method_field('delete')}}
             {{csrf_field()}}
-
             <input type="hidden" id="id_equipo" name="id_equipo" value="">
-
-            <p>Estas seguro de cambiar el estado?</p>
-
-
+            <p>
+              Estas seguro de cambiar el estado?
+            </p>
             <div class="modal-footer">
               <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times fa-2x"></i>Cerrar</button>
-              <button type="submit" class="btn btn-success"><i class="fa fa-lock fa-2x"></i>Aceptar</button>
+              <button type="submit" class="btn btn-success">
+                <i class="fa fa-lock fa-2x"></i>
+                Aceptar
+              </button>
             </div>
-
-
           </form>
         </div>
 
@@ -209,12 +218,6 @@
       <!-- /.modal-content -->
     </div>
     <!-- /.modal-dialog -->
-  </div>
-  <!--Fin del modal-->
-
-
-
-
+  </div>  
 </main>
-
 @endsection

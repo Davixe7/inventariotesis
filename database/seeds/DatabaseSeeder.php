@@ -53,5 +53,10 @@ class DatabaseSeeder extends Seeder
             'tipo' => 'mantenimiento'
           ]);
         }
+
+        \App\Clasificacion::create([
+          'nombre' => 'Prueba',
+          'descripcion' => 'Clasificación de prueba'
+        ]);
     }
 }

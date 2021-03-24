@@ -30,6 +30,8 @@ class CreateEquiposTable extends Migration
             $table->string('ubicacion')->nullable();
             $table->string('piso')->nullable();
 
+            $table->boolean('condicion')->default(true)->nullable();
+
             $table->date('fecha_entrega_servicio')->nullable();
             $table->string('motivo_baja')->nullable();
             $table->date('fecha_baja')->nullable();

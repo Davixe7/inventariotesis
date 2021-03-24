@@ -16,8 +16,6 @@
   <link href="{{asset('css/style.css')}}" rel="stylesheet">
   <script src="{{asset('js/app.js')}}"></script>
   <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js">-->
-
-
 </head>
 
 <body class="app header-fixed sidebar-fixed aside-menu-fixed aside-menu-hidden">
@@ -119,14 +117,9 @@
     /*INICIO ventana modal para cambiar estado de Categoria*/
 
     $('#cambiarEstado').on('show.bs.modal', function(event) {
-
-      //console.log('modal abierto');
-
       var button = $(event.relatedTarget)
       var id_categoria = button.data('id_categoria')
       var modal = $(this)
-      // modal.find('.modal-title').text('New message to ' + recipient)
-
       modal.find('.modal-body #id_categoria').val(id_categoria);
     })
 
@@ -134,51 +127,48 @@
 
     /*EDITAR PRODUCTO EN VENTANA MODAL*/
     $('#abrirmodalEditar').on('show.bs.modal', function(event) {
-
-      //console.log('modal abierto');
-      /*el button.data es lo que está en el button de editar*/
       var button = $(event.relatedTarget)
-      /*este id_categoria_modal_editar selecciona la categoria*/
-      var id_categoria_modal_editar = button.data('id_categoria')
-      var nombre_modal_editar = button.data('nombre')
-      var precio_venta_modal_editar = button.data('precio_venta')
-      var codigo_modal_editar = button.data('codigo')
-      var stock_modal_editar = button.data('stock')
-      //var imagen_modal_editar = button.data('imagen1')
-      var id_producto = button.data('id_producto')
-      var modal = $(this)
-      // modal.find('.modal-title').text('New message to ' + recipient)
-      /*los # son los id que se encuentran en el formulario*/
-      modal.find('.modal-body #id').val(id_categoria_modal_editar);
-      modal.find('.modal-body #nombre').val(nombre_modal_editar);
-      modal.find('.modal-body #precio_venta').val(precio_venta_modal_editar);
-      modal.find('.modal-body #codigo').val(codigo_modal_editar);
-      modal.find('.modal-body #stock').val(stock_modal_editar);
-      // modal.find('.modal-body #subirImagen').html("<img src="img/producto/imagen_modal_editar">");
-      modal.find('.modal-body #id_producto').val(id_producto);
+      var modal                  = $(this)
+
+      var nombre                 = button.data('nombre')
+      let serie                  = button.data('serie')
+      let activo_fijo            = button.data('activo_fijo')
+      let marca                  = button.data('marca')
+      let modelo                 = button.data('modelo')
+      let ubicacion              = button.data('ubicacion')
+      let piso                   = button.data('piso')
+      let motivo_baja            = button.data('motivo_baja')
+      let fecha_baja             = button.data('fecha_baja')
+      let fecha_entrega_servicio = button.data('fecha_entrega_servicio')
+      var id_categoria           = button.data('id_categoria')
+      var id_equipo              = button.data('id_equipo')
+      
+      modal.find('.modal-body #serie').val(serie);
+      modal.find('.modal-body #activo_fijo').val(activo_fijo);
+      modal.find('.modal-body #marca').val(marca);
+      modal.find('.modal-body #modelo').val(modelo);
+      modal.find('.modal-body #ubicacion').val(ubicacion);
+      modal.find('.modal-body #piso').val(piso);
+      modal.find('.modal-body #motivo_baja').val(motivo_baja);
+      modal.find('.modal-body #fecha_baja').val(fecha_baja);
+      modal.find('.modal-body #fecha_entrega_servicio').val(fecha_entrega_servicio);
+      modal.find('.modal-body #id_categoria').val(id_categoria);
+      modal.find('.modal-body #id_equipo').val(id_equipo);
     })
 
-    /*INICIO ventana modal para cambiar el estado del producto*/
-
+    /*MODAL ESTADO EQUIPO*/
     $('#cambiarEstado').on('show.bs.modal', function(event) {
-
-      //console.log('modal abierto');
-
-      var button = $(event.relatedTarget)
-      var id_producto = button.data('id_producto')
-      var modal = $(this)
-      // modal.find('.modal-title').text('New message to ' + recipient)
-
-      modal.find('.modal-body #id_producto').val(id_producto);
+      var modal     = $(this)
+      var button    = $(event.relatedTarget)
+      var id_equipo = button.data('id_equipo')
+    
+      let form = modal.find('.modal-body #form-delete-equipo')
+      form.attr('action', form.attr('action').replace('test', id_equipo) )
+      modal.find('.modal-body #id_equipo').val(id_equipo)
     })
 
-    /*FIN ventana modal para cambiar estado del producto*/
-
-    /*EDITAR PROVEEDOR EN VENTANA MODAL*/
+    /*MODAL EDITAR PROVEEDOR*/
     $('#abrirmodalEditar').on('show.bs.modal', function(event) {
-
-      //console.log('modal abierto');
-      /*el button.data es lo que está en el button de editar*/
       var button = $(event.relatedTarget)
 
       var nombre_modal_editar = button.data('nombre')
@@ -226,23 +216,19 @@
       modal.find('.modal-body #id_cliente').val(id_cliente);
     })
 
-
     /*EDITAR USUARIO EN VENTANA MODAL*/
     $('#abrirmodalEditar').on('show.bs.modal', function(event) {
-
-      //console.log('modal abierto');
-      /*el button.data es lo que está en el button de editar*/
       var button = $(event.relatedTarget)
 
-      var nombre_modal_editar = button.data('nombre')
+      var nombre_modal_editar         = button.data('nombre')
       var tipo_documento_modal_editar = button.data('tipo_documento')
-      var num_documento_modal_editar = button.data('num_documento')
-      var direccion_modal_editar = button.data('direccion')
-      var telefono_modal_editar = button.data('telefono')
-      var email_modal_editar = button.data('email')
+      var num_documento_modal_editar  = button.data('num_documento')
+      var direccion_modal_editar      = button.data('direccion')
+      var telefono_modal_editar       = button.data('telefono')
+      var email_modal_editar          = button.data('email')
       /*este id_rol_modal_editar selecciona la categoria*/
-      var id_rol_modal_editar = button.data('id_rol')
-      var usuario_modal_editar = button.data('usuario')
+      var id_rol_modal_editar         = button.data('id_rol')
+      var usuario_modal_editar        = button.data('usuario')
       //var password_modal_editar = button.data('password')
       var id_usuario = button.data('id_usuario')
       var modal = $(this)
@@ -261,23 +247,14 @@
     })
 
     /*INICIO ventana modal para cambiar el estado del usuario*/
-
     $('#cambiarEstado').on('show.bs.modal', function(event) {
-
-      //console.log('modal abierto');
-
-      var button = $(event.relatedTarget)
+      var button     = $(event.relatedTarget)
       var id_usuario = button.data('id_usuario')
-      var modal = $(this)
-      // modal.find('.modal-title').text('New message to ' + recipient)
-
+      var modal      = $(this)
       modal.find('.modal-body #id_usuario').val(id_usuario);
     })
 
-    /*FIN ventana modal para cambiar estado del usuario*/
-
     /*INICIO ventana modal para cambiar estado de Compra*/
-
     $('#cambiarEstadoCompra').on('show.bs.modal', function(event) {
 
       //console.log('modal abierto');
@@ -290,10 +267,7 @@
       modal.find('.modal-body #id_compra').val(id_compra);
     })
 
-    /*FIN ventana modal para cambiar estado de la compra*/
-
     /*INICIO ventana modal para cambiar estado de Venta*/
-
     $('#cambiarEstadoVenta').on('show.bs.modal', function(event) {
 
       //console.log('modal abierto');
@@ -305,8 +279,6 @@
 
       modal.find('.modal-body #id_venta').val(id_venta);
     })
-
-    /*FIN ventana modal para cambiar estado de la venta*/
   </script>
   <script>
     var nots_counter = $('#notifications-count');

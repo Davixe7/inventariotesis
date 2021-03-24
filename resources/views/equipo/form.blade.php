@@ -27,7 +27,7 @@
     <div class="form-group row">
       <label class="col-md-3 form-control-label" for="codigo">Activo Fijo</label>
       <div class="col-md-9">
-        <input type="text" id="activo_fijo" name="activo_fijo" class="form-control" placeholder="Activo Fijo" required pattern="[0-9]{0,15}">
+        <input type="text" id="activo_fijo" name="activo_fijo" class="form-control" placeholder="Activo Fijo" required>
       </div>
     </div>
 
@@ -48,7 +48,7 @@
     <div class="form-group row">
       <label class="col-md-3 form-control-label" for="marca">Fecha de Entrega al Servicio</label>
       <div class="col-md-9">
-        <input type="date" id="fecha_entrega_servicio" name="fecha_entrega_servicio" class="form-control" placeholder="" pattern="^[a-zA-Z_áéíóúñ\s]{0,100}$" required>
+        <input type="date" id="fecha_entrega_servicio" name="fecha_entrega_servicio" class="form-control">
       </div>
     </div>
 
@@ -57,10 +57,10 @@
       <div class="col-md-9">
         <div class="form-row">
           <div class="col">
-            <input type="text" id="ubicacion" name="ubicacion" class="form-control" placeholder="Ubicación del equipo" pattern="^[a-zA-Z_áéíóúñ\s]{0,100}$" required>
+            <input type="text" id="ubicacion" name="ubicacion" class="form-control" placeholder="Ej: Laboratorio" required>
           </div>
           <div class="col">
-            <input type="text" id="piso" name="piso" class="form-control" placeholder="Piso" pattern="^[a-zA-Z_áéíóúñ\s]{0,100}$" required>
+            <input type="text" id="piso" name="piso" class="form-control" placeholder="Primer Piso" required>
           </div>
         </div>
       </div>
@@ -71,10 +71,10 @@
       <div class="col-md-9">
         <div class="form-row">
           <div class="col-lg-6">
-            <input type="text" id="motivo_baja" name="motivo_baja" class="form-control" placeholder="Motivo de Baja" pattern="^[a-zA-Z_áéíóúñ\s]{0,100}$" required>
+            <input type="text" id="motivo_baja" name="motivo_baja" class="form-control" placeholder="Motivo de Baja">
           </div>
           <div class="col-lg-6">
-            <input type="date" id="fecha_baja" name="fecha_baja" class="form-control" pattern="^[a-zA-Z_áéíóúñ\s]{0,100}$" required>
+            <input type="date" id="fecha_baja" name="fecha_baja" class="form-control">
           </div>
         </div>
       </div>
@@ -83,15 +83,17 @@
     <div class="form-group row">
       <label class="col-md-3 form-control-label" for="imagen">Imagen</label>
       <div class="col-md-9">
-
         <input type="file" id="imagen" name="imagen" class="form-control">
-
       </div>
     </div>
 
-
     <div class="modal-footer">
-      <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-times fa-2x"></i> Cerrar</button>
-      <button type="submit" class="btn btn-success"><i class="fa fa-save fa-2x"></i> Guardar</button>
-
+      <button type="button" class="btn btn-danger" data-dismiss="modal">
+        <i class="fa fa-times fa-2x"></i>
+        Cerrar
+      </button>
+      <button type="submit" class="btn btn-success">
+        <i class="fa fa-save fa-2x"></i>
+        Guardar
+      </button>
     </div>
