@@ -2,6 +2,7 @@
 /public/hot
 /public/storage
 /storage/logs/
+/storage/app/public
 /storage/*.key
 /vendor
 .env
