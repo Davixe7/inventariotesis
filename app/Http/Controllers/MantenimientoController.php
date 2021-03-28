@@ -41,8 +41,11 @@ class MantenimientoController extends Controller
     { 
       if( $request->mes_vencimiento >= now()->format('m') ){
         $fecha_vencimiento = now()->startOfYear()->addMonths( $request->mes_vencimiento - 1 );  
-      }else{
-        $fecha_vencimiento = now()->startOfYear()->addMonths( $request->rate );
+      }
+      else{
+        do {
+          $fecha_vencimiento = now()->startOfYear()->addMonths( $request->rate );
+        } while ($fecha_vencimiento < now()->startOfMonth());
       }
       
       Mantenimiento::create([

@@ -27,9 +27,6 @@ class CreateMantenimientosTable extends Migration
       $table->foreign('proveedor_id')->references('id')->on('proveedores');
 
       $table->date('fecha_vencimiento');
-      $table->date('fecha_aplicacion')->nullable();
-
-      $table->integer('tiempo_parado_mantenimiento')->nullable();
     });
   }
 

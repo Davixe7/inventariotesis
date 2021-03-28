@@ -3,7 +3,11 @@
 <main class="main">
   <!-- Breadcrumb -->
   <ol class="breadcrumb">
-    <li class="breadcrumb-item active"><a href="/">BACKEND - SISTEMA DE COMPRAS - VENTAS</a></li>
+    <li class="breadcrumb-item active">
+      <a href="/">
+        BACKEND - SISTEMA DE COMPRAS - VENTAS
+      </a>
+    </li>
   </ol>
   <div id="app" class="container-fluid">
     <div class="card">
@@ -18,98 +22,98 @@
       </div>
       <div class="card-body">
         @if( $mantenimientos->count() )
-          <table class="table table-bordered table-striped" id="mantenimientos-table">
-            <thead>
-              <tr class="bg-primary">
-                <th>
-                  Tipo
-                </th>
-                <th>
-                  Equipo
-                </th>
-                <th>
-                  Serie
-                </th>
-                <th>
-                  Proveedor
-                </th>
-                <th>
-                  Fecha Correspondiente
-                </th>
-                <th>
-                  Estado
-                </th>
-                <th>
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              @foreach( $mantenimientos as $mantenimiento )
-                <tr class="bg-{{ $mantenimiento->due }}">
-                  <td>
-                    {{ $mantenimiento->tipo }}
-                  </td>
-                  <td>
-                    {{ $mantenimiento->equipo->nombre }}
-                  </td>
-                  <td>
-                    {{ $mantenimiento->equipo->activo_fijo }}
-                  </td>
-                  <td>
-                    {{ $mantenimiento->proveedor->nombre }}
-                  </td>
-                  <td>
-                    {{ $mantenimiento->fecha_vencimiento }}
-                  </td>
-                  <td>
-                    @if( $mantenimiento->fecha_aplicacion )
-                      Aplicado el
-                      {{ $mantenimiento->fecha_aplicacion }}
-                    @else
-                      Pendiente
-                    @endif
-                  </td>
-                  <td>
-                      @if( $mantenimiento->due != 'success')
-                      <btn-aplicar-servicio
-                        :service="{{ $mantenimiento->id }}"
-                        @servicesetup="openModal"
-                      />
-                      @else
-                        <button href="#">
-                          Descargar PDF
-                        </button>
-                      @endif
-                  </td>
-                </tr>
-              @endforeach
-            </tbody>
-          </table>
+        <table class="table table-bordered table-striped" id="mantenimientos-table">
+          <thead>
+            <tr class="bg-primary">
+              <th>
+                Tipo
+              </th>
+              <th>
+                Equipo
+              </th>
+              <th>
+                Serie
+              </th>
+              <th>
+                Proveedor
+              </th>
+              <th>
+                Fecha Correspondiente
+              </th>
+              <th>
+                Estado
+              </th>
+              <th>
+                Acciones
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach( $mantenimientos as $mantenimiento )
+            <tr class="bg-{{ $mantenimiento->due }}">
+              <td>
+                {{ $mantenimiento->tipo }}
+              </td>
+              <td>
+                {{ $mantenimiento->equipo->nombre }}
+              </td>
+              <td>
+                {{ $mantenimiento->equipo->activo_fijo }}
+              </td>
+              <td>
+                {{ $mantenimiento->proveedor->nombre }}
+              </td>
+              <td>
+                {{ $mantenimiento->fecha_vencimiento }}
+              </td>
+              <td>
+                @if( $mantenimiento->due == 'success' )
+                  Aplicado el
+                  {{ $mantenimiento->ultima_aplicacion->fecha_aplicacion }}
+                @else
+                  Pendiente
+                @endif
+              </td>
+              <td>
+                @if( $mantenimiento->due != 'success')
+                  <btn-aplicar-servicio
+                    :service="{{ $mantenimiento->id }}"
+                    @servicesetup="openModal">
+                  </btn-aplicar-servicio>
+                @else
+                <a
+                  class="btn btn-secondary bg-white"
+                  href="{{ route('aplicaciones.pdf', ['aplicacion'=>$mantenimiento->ultima_aplicacion]) }}">
+                  Descargar PDF
+                </a>
+                @endif
+              </td>
+            </tr>
+            @endforeach
+          </tbody>
+        </table>
         @else
-          <div class="alert alert-info">
-            No hay mantenimientos disponibles para mostrar
-          </div>
+        <div class="alert alert-info">
+          No hay mantenimientos disponibles para mostrar
+        </div>
         @endif
       </div>
     </div>
-    <modal-apply-service
-      :service="service"
-      @serviceUpdated="service=null"
-    />
+    <modal-apply-service :service="service" @serviceUpdated="service=null" />
   </div>
 </main>
 @endsection
 
 @section('script')
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"></link>
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
+</link>
 <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script>
-  $(document).ready(function(){
+  $(document).ready(function() {
     $('#mantenimientos-table').DataTable({
       language: {
-            url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
-        }
+        url: 'https://cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json'
+      }
     })
   })
 </script>
@@ -117,16 +121,17 @@
 <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script>
 <script>
   Vue.component('btn-aplicar-servicio', {
-    template:`
+    template: `
     <button
+      class="btn btn-seconday bg-white"
       @click="setupService()"
       >
       Aplicar
     </button>
     `,
     props: ['service'],
-    methods:{
-      setupService(){
+    methods: {
+      setupService() {
         this.$emit('servicesetup', this.service)
       }
     }
@@ -134,9 +139,11 @@
 
   Vue.component('modal-apply-service', {
     props: ['service'],
-    data(){return {
-      disabledBy: null
-    }},
+    data() {
+      return {
+        disabledBy: null
+      }
+    },
     template: `
     <div class="modal" id="applyServiceModal">
       <div class="modal-dialog">
@@ -164,14 +171,16 @@
       </div>
     </div>
     `,
-    methods:{
-      applyService(){
-        if( !this.$refs.applyServiceForm.reportValidity() ){ return }
-        let data = {
-          '_method': 'PUT',
-          'tiempo_parado_mantenimiento': this.disabledBy
+    methods: {
+      applyService() {
+        if (!this.$refs.applyServiceForm.reportValidity()) {
+          return
         }
-        axios.post(`mantenimiento/${this.service}`, data).then(data=>{
+        let data = {
+          'tiempo_parado_mantenimiento': this.disabledBy,
+          'mantenimiento_id': this.service
+        }
+        axios.post(`aplicaciones/store`, data).then(data => {
           this.$emit('serviceUpdated')
           $("#applyServiceModal").modal('hide')
         })
@@ -181,12 +190,16 @@
 
   const app = new Vue({
     el: '#app',
-    data(){return{
-      service: null
-    }},
-    methods:{
-      openModal(service){
-        if( !service ){ return }
+    data() {
+      return {
+        service: null
+      }
+    },
+    methods: {
+      openModal(service) {
+        if (!service) {
+          return
+        }
         this.service = service
         $("#applyServiceModal").modal()
       }

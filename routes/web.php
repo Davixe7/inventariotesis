@@ -35,6 +35,8 @@ Route::group(['middleware' => ['guest']], function () {
 
 Route::group(['middleware' => ['auth']], function () {
   Route::resource('mantenimiento', 'MantenimientoController');
+  Route::post('aplicaciones/store', 'AplicacionController@store')->name('aplicaciones.store');
+  Route::get('aplicaciones/{aplicacion}/downloadPDF', 'AplicacionController@downloadPDF')->name('aplicaciones.pdf');
   Route::post('equipo/import', 'EquipoController@import')->name('equipo.import');
 
   Route::post('/logout', 'Auth\LoginController@logout')->name('logout');

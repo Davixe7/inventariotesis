@@ -15,6 +15,7 @@
   <!-- Main styles for this application -->
   <link href="{{asset('css/style.css')}}" rel="stylesheet">
   <script src="{{asset('js/app.js')}}"></script>
+   @yield('styles')
   <!--<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.3/Chart.min.js">-->
 </head>
 
@@ -61,15 +62,15 @@
 
   <div class="app-body">
 
-    @if(Auth::check())
+  @if(Auth::check())
     @if (Auth::user()->role_id == 1)
-    @include('plantilla.sidebaradministrador')
+      @include('plantilla.sidebaradministrador')
     @elseif (Auth::user()->role_id == 2)
-    @include('plantilla.sidebarvendedor')
+      @include('plantilla.sidebarvendedor')
     @elseif (Auth::user()->role_id == 3)
-    @include('plantilla.sidebarcomprador')
+      @include('plantilla.sidebarcomprador')
     @endif
-    @endif
+  @endif
 
     <!-- Contenido Principal -->
 

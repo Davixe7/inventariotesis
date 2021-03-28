@@ -8,7 +8,6 @@ class Mantenimiento extends Model
 {
   protected $fillable = [
     'fecha_vencimiento',
-    'fecha_aplicacion',
     'frecuencia',
     'equipo_id',
     'proveedor_id',
@@ -16,7 +15,11 @@ class Mantenimiento extends Model
     'tipo',
   ];
 
-  protected $appends = ['due'];
+  protected $appends = ['due', 'ultima_aplicacion'];
+
+  public function aplicaciones(){
+    return $this->hasMany('App\Aplicacion');
+  }
 
   public function equipo(){
     return $this->belongsTo('App\Equipo');
@@ -27,7 +30,11 @@ class Mantenimiento extends Model
   }
 
   public function scopeOfMonth($query){
-    return $query->whereBetween('fecha_vencimiento', [now()->startOfMonth(), now()->endOfMonth()]);
+    return $query
+           ->whereBetween('fecha_vencimiento', [now()->startOfMonth(), now()->endOfMonth()])
+           ->orWhereHas('aplicaciones', function($query){
+             return $query->whereBetween('fecha_aplicacion', [now()->startOfMonth(), now()->endOfMonth()]);
+           });
   }
 
   public function scopePending($query){
@@ -36,12 +43,16 @@ class Mantenimiento extends Model
 
   public function getDueAttribute(){
     $days = \Carbon\Carbon::now()->diffInDays( \Carbon\Carbon::now()->endOfMonth() );
-    if( $this->fecha_aplicacion > \Carbon\Carbon::now()->startOfMonth() ){
+    if( $this->fecha_vencimiento > \Carbon\Carbon::now()->endOfMonth() ){
       return 'success';
     }
     if( $days < 8 ){
       return 'danger';
     }
     return 'warning';
+  }
+
+  public function getUltimaAplicacionAttribute(){
+    return $this->aplicaciones()->orderBy('created_at', 'DESC')->first();
   }
 }

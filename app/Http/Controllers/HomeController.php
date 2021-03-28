@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use \App\Aplicacion;
 use DB;
 
 class HomeController extends Controller
@@ -24,29 +25,25 @@ class HomeController extends Controller
    */
   public function index()
   {
-    $comprasmes = \App\Compra::select(['fecha_compra'])
-              ->selectRaw("SUM(total) as total_mes")
-              ->where('estado','Registrado')
-              ->groupBy('fecha_compra')
-              ->get();
-
-    $mantenimientos_mes = \App\Mantenimiento::selectRaw('monthname(fecha_vencimiento) as mes')
+    $collection_mantenimientos_mes = Aplicacion::selectRaw('monthname(fecha_aplicacion) as mes')
                                             ->selectRaw('count(*) as total')
+                                            ->selectRaw('avg(tiempo_respuesta) as promedio_respuesta')
                                             ->groupBy('mes')
-                                            ->whereBetween('fecha_vencimiento', [\Carbon\Carbon::now()->firstOfMonth()->addMonths(-6), \Carbon\Carbon::now()->lastOfMonth()])
+                                            ->whereBetween('fecha_aplicacion', [\Carbon\Carbon::now()->firstOfMonth()->addMonths(-6), \Carbon\Carbon::now()->lastOfMonth()])
                                             ->get();
 
-    $meses = $mantenimientos_mes->pluck('mes')->toArray();
-    $total = $mantenimientos_mes->pluck('total')->toArray();
+    $meses = $collection_mantenimientos_mes->pluck('mes')->toArray();
+    $array_mantenimientos_mes = $collection_mantenimientos_mes->pluck('total')->toArray();
+    $array_promedio_respuesta = $collection_mantenimientos_mes->pluck('promedio_respuesta')->toArray();
 
-    $chart = [
+    $chart_mantenimientos = [
       'type' => 'bar',
       'data' => [
         'labels' => $meses,
         'datasets' => [
           [
             'label' => 'Completados por Mes',
-            'data'  => $total,
+            'data'  => $array_mantenimientos_mes,
             'maxBarThickness' => 5,
             'barThickness'  => 5,
             'minBarLength'  => 0,
@@ -78,22 +75,50 @@ class HomeController extends Controller
         ]
       ]
     ];
-    
-    //dd( $chart );
 
-    //$comprasmes = DB::select('SELECT monthname(c.fecha_compra) as mes, sum(c.total) as totalmes from compras c where c.estado="Registrado" group by monthname(c.fecha_compra) order by month(c.fecha_compra) desc limit 12');
+    $chart_promedio_respuesta = [
+      'type' => 'bar',
+      'data' => [
+        'labels' => $meses,
+        'datasets' => [
+          [
+            'label' => 'Promedio Respuesta Mensual',
+            'data'  => $array_promedio_respuesta,
+            'maxBarThickness' => 5,
+            'barThickness'  => 5,
+            'minBarLength'  => 0,
+            'barPercentage' => 1,
+            'backgroundColor' => [
+              'rgba(255, 99, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+            ],
+            'borderWidth' => 1
+          ]
+        ]
+      ],
+      'options' => [
+        'scales' => [
+          'xAxes' => [
+            [
+              'barPercentage' => 0.4
+            ]
+          ],
+          'yAxes' => [
+            [
+              'ticks' => [
+                'beginAtZero' => true
+              ]
+            ]
+          ]
+        ]
+      ]
+    ];
 
-    $equiposvendidos  = DB::select('SELECT p.nombre as equipo, sum(dv.cantidad) as cantidad from equipos p inner join detalle_ventas dv on p.id=dv.equipo_id inner join ventas v on dv.venta_id=v.id where v.estado="Registrado" and year(v.fecha_venta)=year(curdate()) group by p.nombre order by sum(dv.cantidad) desc limit 10');
-    $avg_tiempo_respuesta = \App\Mantenimiento::selectRaw('fecha_aplicacion - fecha_vencimiento as tiempo_respuesta')->get()->avg('tiempo_respuesta');
-
-    //$totales = DB::select('SELECT (select ifnull(sum(c.total),0) from compras c where DATE(c.fecha_compra)=curdate() and c.estado="Registrado") as totalcompra, (select ifnull(sum(v.total),0) from ventas v where DATE(v.fecha_venta)=curdate() and v.estado="Registrado") as totalventa');
-    $totales = [];
     return view('home', [
-      "comprasmes"        => $comprasmes,
-      "equiposvendidos" => $equiposvendidos,
-      "totales" => $totales,
-      "chart"   => $chart,
-      "avg_tiempo_respuesta" => $avg_tiempo_respuesta
+      "chart_mantenimientos"     => $chart_mantenimientos,
+      "chart_promedio_respuesta" => $chart_promedio_respuesta
     ]);
   }
 }
