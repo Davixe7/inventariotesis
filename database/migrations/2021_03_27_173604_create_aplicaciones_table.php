@@ -18,7 +18,7 @@ class CreateAplicacionesTable extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('mantenimiento_id');
             $table->foreign('mantenimiento_id')->references('id')->on('mantenimientos');
-            $table->date('fecha_aplicacion')->nullable();
+            $table->dateTime('fecha_aplicacion')->nullable();
             $table->integer('tiempo_respuesta')->nullable();
             $table->integer('tiempo_parado_mantenimiento')->nullable();
         });
