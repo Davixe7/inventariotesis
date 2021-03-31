@@ -17,10 +17,10 @@ class CreateAplicacionesTable extends Migration
             $table->bigIncrements('id');
             $table->timestamps();
             $table->unsignedBigInteger('mantenimiento_id');
-            $table->foreign('mantenimiento_id')->references('id')->on('mantenimientos');
+            $table->foreign('mantenimiento_id')->references('id')->on('mantenimientos')->onDelete('cascade');
             $table->dateTime('fecha_aplicacion')->nullable();
             $table->integer('tiempo_respuesta')->nullable();
-            $table->integer('tiempo_parado_mantenimiento')->nullable();
+            $table->time('tiempo_parado_mantenimiento')->nullable();
         });
     }
 

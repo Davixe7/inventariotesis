@@ -83,7 +83,7 @@
           Tiempo parado por mantenimiento
         </th>
         <td>
-          {{ $aplicacion->tiempo_parado_mantenimiento }} Días
+          {{ $aplicacion->tiempo_parado_mantenimiento }}
         </td>
       </tr>
       <tr>

@@ -17,7 +17,7 @@ class AplicacionController extends Controller
     $aplicacion = Aplicacion::create([
       'fecha_aplicacion' => now(),
       'mantenimiento_id' => $mantenimiento->id,
-      'tiempo_parado_mantenimiento' => $request->tiempo_parado_mantenimiento,
+      'tiempo_parado_mantenimiento' => now()->startOfDay()->addHours( $request->disabled_hours )->addMinutes( $request->disabled_minutes )->format('h:i:s'),
       'tiempo_respuesta' => now()->format('d'),
     ]);
 
@@ -26,7 +26,7 @@ class AplicacionController extends Controller
 
   public function downloadPDF(Request $request, Aplicacion $aplicacion){
     $aplicacion->load('mantenimiento');
-    $pdf= \PDF::loadView('pdf.mantenimiento', ['aplicacion' => $aplicacion]);
+    $pdf = \PDF::loadView('pdf.mantenimiento', ['aplicacion' => $aplicacion]);
     return $pdf->download("mantenimiento-{$aplicacion->id}.pdf");
   }
 }

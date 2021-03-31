@@ -39,22 +39,15 @@ class MantenimientoController extends Controller
      */
     public function store(Request $request)
     { 
-      if( $request->mes_vencimiento >= now()->format('m') ){
-        $fecha_vencimiento = now()->startOfYear()->addMonths( $request->mes_vencimiento - 1 );  
-      }
-      else{
-        do {
-          $fecha_vencimiento = now()->startOfYear()->addMonths( $request->rate );
-        } while ($fecha_vencimiento < now()->startOfMonth());
-      }
-      
-      Mantenimiento::create([
+      $mantenimiento = new Mantenimiento([
         'proveedor_id'      => $request->proveedor_id,
         'equipo_id'         => $request->equipo_id,
-        'fecha_vencimiento' => $fecha_vencimiento,
-        'frecuencia'        => $request->rate,
         'tipo'              => $request->tipo
       ]);
+
+      $mantenimiento->frecuencia = $request->rate;
+      $mantenimiento->mes_vencimiento = $request->mes_vencimiento;
+      $mantenimiento->save();
 
       return redirect()->route('mantenimiento.index');
     }
@@ -68,10 +61,22 @@ class MantenimientoController extends Controller
      */
     public function update(Request $request, Mantenimiento $mantenimiento)
     {
-      $mantenimiento->update([
-        'fecha_aplicacion' => now(),
-        'tiempo_parado_mantenimiento' => $request->tiempo_parado_mantenimiento
-      ]);
+      $mantenimiento->frecuencia = $request->rate;
+      $mantenimiento->mes_vencimiento = $request->mes_vencimiento;
+      $mantenimiento->save();
+
       return response()->json(['data' => $mantenimiento]);
+    }
+
+    /**
+     * Delete the specified resource in storage.
+     *
+     * @param  \App\Mantenimiento  $matenimiento
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy(Mantenimiento $mantenimiento){
+      $mantenimiento->delete();
+      return redirect()->route('mantenimiento.index');
+      //return response()->json(['data' => "Mantenimiento $mantenimiento->id eliminado exitosamente"]);
     }
 }

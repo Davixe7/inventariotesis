@@ -55,4 +55,23 @@ class Mantenimiento extends Model
   public function getUltimaAplicacionAttribute(){
     return $this->aplicaciones()->orderBy('created_at', 'DESC')->first();
   }
+
+  public function getMesVencimientoAttribute(){
+    return $this->fecha_vencimiento ? \Carbon\Carbon::parse( $this->fecha_vencimiento )->format("m") : null;
+  }
+
+  public function setMesVencimientoAttribute( $mes ){
+    if( $mes == $this->mes_vencimiento ){ return; }
+
+    if( $mes >= now()->format("m") ){
+      $this->fecha_vencimiento = now()->setMonth( $mes );
+      return;
+    }
+
+    $this->fecha_vencimiento = now()->setMonth( $mes )->startOfMonth();
+
+    do {
+      $this->fecha_vencimiento = $this->fecha_vencimiento->addMonths( $this->frecuencia );
+    } while ($this->fecha_vencimiento < now()->startOfMonth());
+  }
 }

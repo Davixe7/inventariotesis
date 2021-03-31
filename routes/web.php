@@ -23,10 +23,6 @@ Route::get('notificar', function(){
   Notification::send($users, new MonthRevisions( $count ));
 });
 
-Route::get('import', function(){
-  return view('equipo.import');
-});
-
 Route::group(['middleware' => ['guest']], function () {
   Route::get('/', 'Auth\LoginController@showLoginForm');
   Route::post('/login', 'Auth\LoginController@login')->name('login');
@@ -34,45 +30,21 @@ Route::group(['middleware' => ['guest']], function () {
 
 
 Route::group(['middleware' => ['auth']], function () {
-  Route::resource('mantenimiento', 'MantenimientoController');
-  Route::post('aplicaciones/store', 'AplicacionController@store')->name('aplicaciones.store');
-  Route::get('aplicaciones/{aplicacion}/downloadPDF', 'AplicacionController@downloadPDF')->name('aplicaciones.pdf');
-  Route::post('equipo/import', 'EquipoController@import')->name('equipo.import');
-
   Route::post('/logout', 'Auth\LoginController@logout')->name('logout');
   Route::get('/home', 'HomeController@index');
+
+  Route::resource('mantenimiento', 'MantenimientoController', ['except'=>['edit', 'show']]);
   
-  Route::group(['middleware' => ['Comprador']], function () {
-    Route::resource('clasificacion', 'ClasificacionController');
-    Route::resource('equipo', 'EquipoController');
-    Route::get('/listarEquipoPdf', 'EquipoController@listarPdf')->name('equipos_pdf');
-    Route::resource('proveedor', 'ProveedorController');
-    Route::resource('compra', 'CompraController');
-    Route::get('/pdfCompra/{id}', 'CompraController@pdf')->name('compra_pdf');
-  });
-
-  Route::group(['middleware' => ['Vendedor']], function () {
-
-    Route::resource('clasificacion', 'ClasificacionController');
-    Route::resource('equipo', 'EquipoController');
-    Route::get('/listarEquipoPdf', 'EquipoController@listarPdf')->name('equipos_pdf');
-    Route::resource('cliente', 'ClienteController');
-    Route::resource('venta', 'VentaController');
-    Route::get('/pdfVenta/{id}', 'VentaController@pdf')->name('venta_pdf');
-  });
-
   Route::group(['middleware' => ['Administrador']], function () {
-
-    Route::resource('clasificacion', 'ClasificacionController');
-    Route::resource('equipo', 'EquipoController');
-    Route::get('/listarEquipoPdf', 'EquipoController@listarPdf')->name('equipos_pdf');
-    Route::resource('proveedor', 'ProveedorController');
-    Route::resource('compra', 'CompraController');
-    Route::get('/pdfCompra/{id}', 'CompraController@pdf')->name('compra_pdf');
-    Route::resource('venta', 'VentaController');
-    Route::get('/pdfVenta/{id}', 'VentaController@pdf')->name('venta_pdf');
-    Route::resource('cliente', 'ClienteController');
     Route::resource('rol', 'RolController');
     Route::resource('user', 'UserController');
+    Route::resource('clasificacion', 'ClasificacionController');
+    Route::resource('proveedor', 'ProveedorController');
+    Route::resource('equipo', 'EquipoController');
+    Route::get('/listarEquipoPdf', 'EquipoController@listarPdf')->name('equipos_pdf');
+    Route::get('/pdfCompra/{id}', 'CompraController@pdf')->name('compra_pdf');
+    Route::get('/pdfVenta/{id}', 'VentaController@pdf')->name('venta_pdf');
+    Route::post('aplicaciones/store', 'AplicacionController@store')->name('aplicaciones.store');
+    Route::get('aplicaciones/{aplicacion}/downloadPDF', 'AplicacionController@downloadPDF')->name('aplicaciones.pdf');
   });
 });

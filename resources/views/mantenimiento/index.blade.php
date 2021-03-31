@@ -68,25 +68,33 @@
               </td>
               <td>
                 @if( $mantenimiento->due == 'success' )
-                  Aplicado el
-                  {{ $mantenimiento->ultima_aplicacion->fecha_aplicacion }}
+                Aplicado el
+                {{ $mantenimiento->ultima_aplicacion->fecha_aplicacion }}
                 @else
-                  Pendiente
+                Pendiente
                 @endif
               </td>
               <td>
                 @if( $mantenimiento->due != 'success')
-                  <btn-aplicar-servicio
-                    :service="{{ $mantenimiento->id }}"
-                    @servicesetup="openModal">
-                  </btn-aplicar-servicio>
+                <btn-aplicar-servicio :service="{{ $mantenimiento->id }}" @servicesetup="openModal">
+                </btn-aplicar-servicio>
                 @else
-                <a
-                  class="btn btn-secondary bg-white"
-                  href="{{ route('aplicaciones.pdf', ['aplicacion'=>$mantenimiento->ultima_aplicacion]) }}">
-                  Descargar PDF
+                <a class="btn btn-secondary bg-white" href="{{ route('aplicaciones.pdf', ['aplicacion'=>$mantenimiento->ultima_aplicacion]) }}">
+                  <i class="fa fa-download"></i>
                 </a>
                 @endif
+                <a href="#" class="btn btn-secondary bg-white">
+                  <i class="fa fa-edit"></i>
+                </a>
+                <a href="#"
+                class="btn btn-secondary bg-white"
+                onclick="if( !window.confirm('eliminar mantenimiento?') ){ return; } document.querySelector('#delete-mtto-{{ $mantenimiento->id }}').submit()">
+                <i class="fa fa-trash"></i>
+                </a>
+                <form id="delete-mtto-{{ $mantenimiento->id }}" method="POST" action="{{ route('mantenimiento.destroy', ['mantenimiento'=>$mantenimiento->id]) }}">
+                @method('DELETE')
+                @csrf
+                </form>
               </td>
             </tr>
             @endforeach
@@ -105,8 +113,7 @@
 @endsection
 
 @section('script')
-<link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css">
-</link>
+<link rel="stylesheet" href="//cdn.datatables.net/1.10.24/css/jquery.dataTables.min.css"></link>
 <script src="//cdn.datatables.net/1.10.24/js/jquery.dataTables.min.js"></script>
 <script>
   $(document).ready(function() {
@@ -141,7 +148,8 @@
     props: ['service'],
     data() {
       return {
-        disabledBy: null
+        disabledByHours: 0,
+        disabledByMinutes: 0
       }
     },
     template: `
@@ -158,7 +166,16 @@
             <form ref="applyServiceForm">
               <div class="form-group">
                 <label>Tiempo Parado el Equipo por Mantenimiento</label>
-                <input type="number" class="form-control" v-model="disabledBy" required/>
+                <div class="row">
+                <div class="col">
+                <label>Horas</label>
+                <input type="number" class="form-control" v-model="disabledByHours"   min="0" max="23" placeholder="00" required/>
+                </div>
+                <div class="col">
+                <label>Minutos</label>
+                <input type="number" class="form-control" v-model="disabledByMinutes" min="0" max="59" placeholder="00" required/>
+                </div>
+                </div>
               </div>
               <div class="form-group">
               <button v-if="service" @click="applyService" class="btn btn-secondary">
@@ -177,7 +194,8 @@
           return
         }
         let data = {
-          'tiempo_parado_mantenimiento': this.disabledBy,
+          'disabled_hours':   this.disabledByHours,
+          'disabled_minutes': this.disabledByMinutes,
           'mantenimiento_id': this.service
         }
         axios.post(`aplicaciones/store`, data).then(data => {
