@@ -11,7 +11,7 @@
           {{csrf_field()}}
         </form>
       </li>
-
+ 
       <li class="nav-title">
         Menú
       </li>
