@@ -15,12 +15,24 @@ class DatabaseSeeder extends Seeder
       'nombre' => 'Administrador'
     ]);
 
+    App\Rol::create([
+      'nombre' => 'Coordinador'
+    ]);
+
     App\User::create([
       'nombre'   => 'John Doe',
       'usuario'  => 'admin',
       'email'    => 'admin@mail.com',
       'password' => bcrypt(123456),
       'role_id'  => 1
+    ]);
+
+    App\User::create([
+      'nombre'   => 'Jim Doe',
+      'usuario'  => 'coordinador',
+      'email'    => 'coordinador@mail.com',
+      'password' => bcrypt(123456),
+      'role_id'  => 2
     ]);
 
     $proveedores = [
