@@ -51,29 +51,6 @@
         </form>
       </li>
 
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{url('compra')}}" onclick="event.preventDefault(); document.getElementById('compra-form').submit();"><i class="fa fa-shopping-cart"></i> Compras</a>
-        <form id="compra-form" action="{{url('compra')}}" method="GET" style="display: none;">
-          {{csrf_field()}}
-        </form>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{url('venta')}}" onclick="event.preventDefault(); document.getElementById('venta-form').submit();"><i class="fa fa-suitcase"></i> Ventas</a>
-        <form id="venta-form" action="{{url('venta')}}" method="GET" style="display: none;">
-          {{csrf_field()}}
-        </form>
-      </li>
-
-      <li class="nav-item">
-        <a class="nav-link" href="{{url('cliente')}}" onclick="event.preventDefault(); document.getElementById('cliente-form').submit();"><i class="fa fa-users"></i> Clientes</a>
-        <form id="cliente-form" action="{{url('cliente')}}" method="GET" style="display: none;">
-          {{csrf_field()}}
-        </form>
-      </li>
-
-
       <li class="nav-item">
         <a class="nav-link" href="{{url('user')}}" onclick="event.preventDefault(); document.getElementById('user-form').submit();"><i class="fa fa-user"></i> Usuarios</a>
         <form id="user-form" action="{{url('user')}}" method="GET" style="display: none;">
