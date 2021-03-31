@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Reporte de Productos</title>
+  <title>Reporte de Equipos</title>
   <style>
     body {
       margin: 0;
@@ -104,7 +104,7 @@
 <body>
   <div>
     <h3>
-      Lista de Productos <span class="derecha">{{now()}}</span>
+      Lista de Equipos <span class="derecha">{{now()}}</span>
     </h3>
   </div>
   <div>
@@ -113,6 +113,10 @@
         <tr>
           <th>Categoría</th>
           <th>Nombre</th>
+          <th>Marca</th>
+          <th>Modelo</th>
+          <th>Serie</th>
+          <th>Ubicación</th>
           <th>Activo fijo</th>
         </tr>
       </thead>
@@ -121,6 +125,10 @@
         <tr>
           <td>{{ $equipo->clasificacion->nombre }}</td>
           <td>{{ $equipo->nombre }}</td>
+          <td>{{ $equipo->marca }}</td>
+          <td>{{ $equipo->modelo }}</td>
+          <td>{{ $equipo->serie }}</td>
+          <td>{{ $equipo->ubicacion }}</td>
           <td>{{ $equipo->activo_fijo }}</td>
         </tr>
         @endforeach
