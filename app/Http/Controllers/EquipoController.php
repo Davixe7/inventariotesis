@@ -156,6 +156,8 @@ class EquipoController extends Controller
       'modelo',
       'serie',
       'ubicacion',
+      'piso',
+      'fecha_entrega_servicio',
       'clasificacion_id'
     ])->with([
       'clasificacion' => function($query){

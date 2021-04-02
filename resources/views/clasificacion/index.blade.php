@@ -12,9 +12,11 @@
 
         <h2>Listado de Clasificaciones</h2><br />
 
+        @if( auth()->user()->role_id == 1)
         <button class="btn btn-primary btn-lg" type="button" data-toggle="modal" data-target="#abrirmodal">
           <i class="fa fa-plus fa-2x"></i>&nbsp;&nbsp;Agregar Clasificación
         </button>
+        @endif
       </div>
       <div class="card-body">
         <div class="form-group row">
@@ -35,8 +37,11 @@
               <th>Clasificación</th>
               <th>Descripción</th>
               <th>Estado</th>
+
+              @if( auth()->user()->role_id == 1)
               <th>Editar</th>
               <th>Cambiar Estado</th>
+              @endif
             </tr>
           </thead>
           <tbody>
@@ -48,50 +53,35 @@
               <td>{{ $clas->nombre }}</td>
               <td>{{ $clas->descripcion }}</td>
               <td>
-
                 @if($clas->condicion=="1")
-
-                <button type="button" class="btn btn-success btn-md">
-
-                  <i class="fa fa-check fa-2x"></i> Activo
-                </button>
-
+                  <button type="button" class="btn btn-success btn-md">
+                    <i class="fa fa-check fa-2x"></i> Activo
+                  </button>
                 @else
-                <button type="button" class="btn btn-danger btn-md">
-
-                  <i class="fa fa-check fa-2x"></i> Desactivado
-                </button>
-
+                  <button type="button" class="btn btn-danger btn-md">
+                    <i class="fa fa-check fa-2x"></i> Desactivado
+                  </button>
                 @endif
-
-
               </td>
 
-              <td>
-                <button type="button" class="btn btn-info btn-md" data-id_clasificacion="{{ $clas->id }}" data-nombre="{{ $clas->nombre }}" data-descripcion="{{ $clas->descripcion }}" data-toggle="modal" data-target="#abrirmodalEditar">
-
-                  <i class="fa fa-edit fa-2x"></i> Editar
-                </button> &nbsp;
-              </td>
-
-              <td>
-
-
-                @if($clas->condicion)
-
-                <button type="button" class="btn btn-danger btn-sm" data-id_clasificacion="{{ $clas->id }}" data-toggle="modal" data-target="#cambiarEstado">
-                  <i class="fa fa-times fa-2x"></i> Desactivar
-                </button>
-
-                @else
-
-                <button type="button" class="btn btn-success btn-sm" data-id_clasificacion="{{ $clas->id }}" data-toggle="modal" data-target="#cambiarEstado">
-                  <i class="fa fa-lock fa-2x"></i> Activar
-                </button>
-
-                @endif
-
-              </td>
+              @if( auth()->user()->role_id == 1)
+                <td>
+                  <button type="button" class="btn btn-info btn-md" data-id_clasificacion="{{ $clas->id }}" data-nombre="{{ $clas->nombre }}" data-descripcion="{{ $clas->descripcion }}" data-toggle="modal" data-target="#abrirmodalEditar">
+                    <i class="fa fa-edit fa-2x"></i> Editar
+                  </button> &nbsp;
+                </td>
+                <td>
+                  @if($clas->condicion)
+                  <button type="button" class="btn btn-danger btn-sm" data-id_clasificacion="{{ $clas->id }}" data-toggle="modal" data-target="#cambiarEstado">
+                    <i class="fa fa-times fa-2x"></i> Desactivar
+                  </button>
+                  @else
+                  <button type="button" class="btn btn-success btn-sm" data-id_clasificacion="{{ $clas->id }}" data-toggle="modal" data-target="#cambiarEstado">
+                    <i class="fa fa-lock fa-2x"></i> Activar
+                  </button>
+                  @endif
+                </td>
+              @endif
             </tr>
 
             @endforeach

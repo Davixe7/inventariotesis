@@ -18,11 +18,13 @@
 
     .table {
       display: table;
-      width: 100%;
-      max-width: 100%;
+      width: 700px;
       margin-bottom: 1rem;
       background-color: transparent;
       border-collapse: collapse;
+      font-size: 8px;
+      text-transform: lowercase;
+      box-sizing: border-box;
     }
 
     .table-bordered {
@@ -43,7 +45,7 @@
 
     .table th,
     .table td {
-      padding: 0.75rem;
+      padding: 0.65rem;
       vertical-align: top;
       border-top: 1px solid #c2cfd6;
     }
@@ -116,8 +118,9 @@
           <th>Marca</th>
           <th>Modelo</th>
           <th>Serie</th>
-          <th>Ubicación</th>
-          <th>Activo fijo</th>
+          <th style="width: 50px;">Ubicación</th>
+          <th>Piso</th>
+          <th>Entrega</th>
         </tr>
       </thead>
       <tbody>
@@ -127,9 +130,10 @@
           <td>{{ $equipo->nombre }}</td>
           <td>{{ $equipo->marca }}</td>
           <td>{{ $equipo->modelo }}</td>
-          <td>{{ $equipo->serie }}</td>
-          <td>{{ $equipo->ubicacion }}</td>
           <td>{{ $equipo->activo_fijo }}</td>
+          <td style="width: 50px;">{{ $equipo->ubicacion }}</td>
+          <td>{{ $equipo->piso }}</td>
+          <td>{{ $equipo->fecha_entrega_servicio }}</td>
         </tr>
         @endforeach
       </tbody>

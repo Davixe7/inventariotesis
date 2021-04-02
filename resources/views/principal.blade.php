@@ -66,9 +66,7 @@
     @if (Auth::user()->role_id == 1)
       @include('plantilla.sidebaradministrador')
     @elseif (Auth::user()->role_id == 2)
-      @include('plantilla.sidebarvendedor')
-    @elseif (Auth::user()->role_id == 3)
-      @include('plantilla.sidebarcomprador')
+      @include('plantilla.sidebarcoordinador')
     @endif
   @endif
 

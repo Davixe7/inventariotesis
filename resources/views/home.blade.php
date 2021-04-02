@@ -9,7 +9,7 @@
   </ol>
   <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-6">
+      <div class="col-lg-4">
         <div class="card">
           <div class="card-header text-center">
             <h4>
@@ -23,7 +23,7 @@
         </div>
       </div>
 
-      <div class="col-lg-6">
+      <div class="col-lg-4">
         <div class="card">
           <div class="card-header text-center">
             <h4>
@@ -32,7 +32,21 @@
           </div>
           <div class="card-body text-center">
           <canvas id="chart_avg_respuesta" width="100%">
-            </canvas>
+          </canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4">
+        <div class="card">
+          <div class="card-header text-center">
+            <h4>
+              Promedio Horas Inhabilidad por Mantenimiento
+            </h4>
+          </div>
+          <div class="card-body text-center">
+          <canvas id="chart_avg_disabled" width="100%">
+          </canvas>
           </div>
         </div>
       </div>
@@ -61,8 +75,11 @@
 <script>
   var elChartMttoMes = document.getElementById('chart_mtto_mes').getContext('2d');
   var elAvgRespuesta = document.getElementById('chart_avg_respuesta').getContext('2d');
+  var elChartAvgDisabled = document.getElementById('chart_avg_disabled').getContext('2d');
 
-  var chartMttoMes = new Chart(elChartMttoMes, {!! json_encode($chart_mantenimientos) !!})
+  var chartMttoMes      = new Chart(elChartMttoMes, {!! json_encode($chart_mantenimientos) !!})
   var chartAvgRespuesta = new Chart(elAvgRespuesta, {!! json_encode($chart_promedio_respuesta) !!})
+  var chartAvgDisabled  = new Chart(elChartAvgDisabled, {!! json_encode($chart_promedio_disabled) !!})
+
 </script>
 @endsection

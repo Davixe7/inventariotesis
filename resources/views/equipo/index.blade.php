@@ -12,6 +12,7 @@
         <h2>
           Listado de Equipos
         </h2>
+        @if( auth()->user()->role_id == 1)
         <button
           data-toggle="modal"
           data-target="#abrirmodal"
@@ -19,6 +20,7 @@
           class="btn btn-primary btn-lg">
           <i class="fa fa-plus fa-2x"></i>&nbsp;&nbsp;Agregar Equipo
         </button>
+        @endif
 
         <a href="{{ url('listarEquipoPdf' )}}" target="_blank">
           <button type="button" class="btn btn-success btn-lg">
@@ -44,17 +46,27 @@
               <th>Imagen</th>
               <th>Categoria</th>
               <th>Equipo</th>
+              <th>Marca</th>
+              <th>Modelo</th>
               <th>Codigo</th>
-              <th>Estado</th>
-              <th>Editar</th>
-              <th>Cambiar Estado</th>
+              <th>Ubicacion</th>
+              <th>Piso</th>
+              <!-- <th>Estado</th> -->
+              @if( auth()->user()->role_id == 1)
+                <th>Editar</th>
+                <th>Cambiar Estado</th>
+              @endif
             </tr>
           </thead>
           <tbody>
             @foreach($equipos as $prod)
             <tr>
               <td>
-                <img src="{{asset('storage/img/equipo/' . $prod->imagen)}}" id="imagen1" alt="{{$prod->nombre}}" class="img-responsive" width="100px" height="100px">
+              @if( $prod->imagen )
+              <img src="{{asset('storage/img/equipo/' . $prod->imagen)}}" id="imagen1" alt="{{$prod->nombre}}" class="img-responsive" width="100px" height="100px">
+              @else
+              <i class="fa fa-photo"></i>
+              @endif
               </td>
               <td>
                 {{$prod->clasificacion->nombre}}
@@ -63,9 +75,21 @@
                 {{$prod->nombre}}
               </td>
               <td>
-                {{$prod->activo_fijo}}
+                {{$prod->marca}}
               </td>
               <td>
+                {{$prod->modelo}}
+              </td>
+              <td>
+                {{$prod->activo_fijo}}
+              </td>
+              <td style="font-size: 12px;">
+                {{$prod->ubicacion}}
+              </td>
+              <td>
+                {{$prod->piso}}
+              </td>
+              <!-- <td>
                 @if($prod->condicion=="1")
                 <button type="button" class="btn btn-success btn-md">
                   <i class="fa fa-check fa-2x"></i> Activo
@@ -75,7 +99,8 @@
                   <i class="fa fa-check fa-2x"></i> Desactivado
                 </button>
                 @endif
-              </td>
+              </td> -->
+              @if( auth()->user()->role_id == 1)
               <td>
                 <button
                   data-id_equipo="{{$prod->id}}"
@@ -122,6 +147,7 @@
                 </button>
                 @endif
               </td>
+              @endif
             </tr>
             @endforeach
           </tbody>

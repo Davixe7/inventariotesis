@@ -15,10 +15,14 @@
         <h2>
           Mantenimientos Agendados
         </h2>
-        <a class="btn btn-primary btn-lg ml-auto" href="{{ route('mantenimiento.create') }}">
+        @if( auth()->user()->role_id == 1)
+        <a
+          href="{{ route('mantenimiento.create') }}"
+          class="btn btn-primary btn-lg ml-auto">
           <i class="fa fa-plus mr-2"></i>
           Agendar Mantenimiento
         </a>
+        @endif
       </div>
       <div class="card-body">
         @if( $mantenimientos->count() )
@@ -43,9 +47,11 @@
               <th>
                 Estado
               </th>
-              <th>
-                Acciones
-              </th>
+              @if( auth()->user()->role_id == 1)
+                <th>
+                  Acciones
+                </th>
+              @endif
             </tr>
           </thead>
           <tbody>
@@ -68,20 +74,25 @@
               </td>
               <td>
                 @if( $mantenimiento->due == 'success' )
-                Aplicado el
-                {{ $mantenimiento->ultima_aplicacion->fecha_aplicacion }}
+                  Aplicado el
+                  {{ $mantenimiento->ultima_aplicacion->fecha_aplicacion }}
                 @else
-                Pendiente
+                  Pendiente
                 @endif
               </td>
+              @if( auth()->user()->role_id == 1)
               <td>
                 @if( $mantenimiento->due != 'success')
-                <btn-aplicar-servicio :service="{{ $mantenimiento->id }}" @servicesetup="openModal">
-                </btn-aplicar-servicio>
+                  <btn-aplicar-servicio
+                    :service="{{ $mantenimiento->id }}"
+                    @servicesetup="openModal">
+                  </btn-aplicar-servicio>
                 @else
-                <a class="btn btn-secondary bg-white" href="{{ route('aplicaciones.pdf', ['aplicacion'=>$mantenimiento->ultima_aplicacion]) }}">
-                  <i class="fa fa-download"></i>
-                </a>
+                  <a
+                    href="{{ route('aplicaciones.pdf', ['aplicacion'=>$mantenimiento->ultima_aplicacion]) }}"
+                    class="btn btn-secondary bg-white">
+                    <i class="fa fa-download"></i>
+                  </a>
                 @endif
                 <a href="#" class="btn btn-secondary bg-white">
                   <i class="fa fa-edit"></i>
@@ -96,6 +107,7 @@
                 @csrf
                 </form>
               </td>
+              @endif
             </tr>
             @endforeach
           </tbody>
