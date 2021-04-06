@@ -20,8 +20,14 @@ class EquipoController extends Controller
    */
   public function index(Request $request)
   {
-    $buscarTexto = trim($request->get('buscarTexto'));
-    $equipos = Equipo::orderBy('nombre')->with('clasificacion')->paginate(20);
+    $equipos = Equipo::orderBy('nombre')->with('clasificacion');
+    if( $buscarTexto = trim($request->get('buscarTexto')) ){
+      $equipos->where('nombre', 'LIKE', '%' . $buscarTexto . '%')
+      ->orwhere('activo_fijo', 'LIKE', '%' . $buscarTexto . '%')
+      ->orwhere('marca', 'LIKE', '%' . $buscarTexto . '%')
+      ->orderBy('id', 'desc');
+    }
+    $equipos = $equipos->paginate(20);
     $clasificaciones = Clasificacion::all();
     return view('equipo.index', compact('equipos','clasificaciones','buscarTexto'));
 

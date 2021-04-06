@@ -50,7 +50,7 @@ class ProveedorController extends Controller
     $proveedor->telefono = $request->telefono;
     $proveedor->email = $request->email;
     $proveedor->direccion = $request->direccion;
-    $proveedor->tipo = $request->tipo;
+    $proveedor->tipo = 'mantenimiento';
     $proveedor->save();
     return Redirect::to("proveedor");
   }

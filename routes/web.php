@@ -42,8 +42,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('proveedor', 'ProveedorController');
     Route::resource('equipo', 'EquipoController');
     Route::get('/listarEquipoPdf', 'EquipoController@listarPdf')->name('equipos_pdf');
-    Route::get('/pdfCompra/{id}', 'CompraController@pdf')->name('compra_pdf');
-    Route::get('/pdfVenta/{id}', 'VentaController@pdf')->name('venta_pdf');
     Route::post('aplicaciones/store', 'AplicacionController@store')->name('aplicaciones.store');
     Route::get('aplicaciones/{aplicacion}/downloadPDF', 'AplicacionController@downloadPDF')->name('aplicaciones.pdf');
   });
