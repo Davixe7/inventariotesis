@@ -52,8 +52,6 @@ class UserController extends Controller
 
   public function store(Request $request)
   {
-    //
-
     $user = new User();
     $user->nombre = $request->nombre;
     $user->tipo_documento = $request->tipo_documento;
@@ -66,40 +64,21 @@ class UserController extends Controller
     $user->condicion = '1';
     $user->role_id = $request->id_rol;
 
-    //inicio registrar imagen
     //Handle File Upload
-    if ($request->hasFile('imagen')) {
-
-      //Get filename with the extension
-      $filenamewithExt = $request->file('imagen')->getClientOriginalName();
-
-      //Get just filename
-      $filename = pathinfo($filenamewithExt, PATHINFO_FILENAME);
-
-      //Get just ext
-      $extension = $request->file('imagen')->guessClientExtension();
-
-      //FileName to store
+    $fileNameToStore = "noimagen.jpg";
+    if ($file = $request->file('imagen')) {
+      $extension       = $file->guessClientExtension();
       $fileNameToStore = time() . '.' . $extension;
-
-      //Upload Image
-      $path = $request->file('imagen')->storeAs(public_path('public/img/usuario'), $fileNameToStore);
-    } else {
-
-      $fileNameToStore = "noimagen.jpg";
+      $file->storeAs('public/img/usuario', $fileNameToStore);
     }
 
     $user->imagen = $fileNameToStore;
-
-    //fin registrar imagen
     $user->save();
     return Redirect::to("user");
   }
 
   public function update(Request $request)
   {
-    //
-
     $user = User::findOrFail($request->id_usuario);
     $user->nombre = $request->nombre;
     $user->tipo_documento = $request->tipo_documento;
@@ -112,41 +91,15 @@ class UserController extends Controller
     $user->condicion = '1';
     $user->role_id = $request->id_rol;
 
-    //Editar imagen
-
-    if ($request->hasFile('imagen')) {
-
-      /*si la imagen que subes es distinta a la que está por defecto 
-                    entonces eliminaría la imagen anterior, eso es para evitar 
-                    acumular imagenes en el servidor*/
+    if ($file = $request->file('imagen')) {
       if ($user->imagen != 'noimagen.jpg') {
         Storage::delete('public/img/usuario/' . $user->imagen);
       }
-
-
-      //Get filename with the extension
-      $filenamewithExt = $request->file('imagen')->getClientOriginalName();
-
-      //Get just filename
-      $filename = pathinfo($filenamewithExt, PATHINFO_FILENAME);
-
-      //Get just ext
-      $extension = $request->file('imagen')->guessClientExtension();
-
-      //FileName to store
+      $extension       = $file->guessClientExtension();
       $fileNameToStore = time() . '.' . $extension;
-
-      //Upload Image
-      $path = $request->file('imagen')->storeAs('public/img/usuario', $fileNameToStore);
-    } else {
-
-      $fileNameToStore = $user->imagen;
+      $file->storeAs('public/img/usuario', $fileNameToStore);
+      $user->imagen = $fileNameToStore;
     }
-
-    $user->imagen = $fileNameToStore;
-
-
-    //fin editar imagen
 
     $user->save();
     return Redirect::to("user");
